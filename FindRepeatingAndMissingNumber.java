@@ -79,6 +79,66 @@ public class FindRepeatingAndMissingNumber {
         return new int[] { repeating, missing };
     }
 
+    // Time Complexity
+    // O(N*N)
+
+    // Space Complexity
+    // O(N)
+
+    /*
+     * First, calculate the sum of all elements in the given array, denoted as S,
+     * and the sum of natural numbers from 1 to N, denoted as Sn. The formula for Sn
+     * is (N * (N + 1)) / 2.
+     * Now calculate S - Sn. This gives us X - Y, where X is the repeating number
+     * and Y is the missing number.
+     * Next, calculate the sum of squares of all elements in the array, denoted as
+     * S2, and the sum of squares of the first N numbers, denoted as S2n. The
+     * formula for S2n is (N * (N + 1) * (2N + 1)) / 6.
+     * Now calculate S2 - S2n. This gives us X2 - Y2.
+     * From the equations S - Sn = X - Y and S2 - S2n = X2 - Y2, we can compute X +
+     * Y by the formula (S2 - S2n) / (S - Sn).
+     * Using the values of X + Y and X - Y, we can solve for X and Y through simple
+     * addition and subtraction.
+     * Finally, return the values of X (the repeating number) and Y (the missing
+     * number).
+     */
+
+    public static int[] Optimal1(int[] arr) {
+        long n = arr.length;
+
+        // Sum of first n natural numbers
+
+        long SN = (n * (n + 1)) / 2;
+
+        // Sum of squares of first n natural numbers
+
+        long S2N = (n * (n + 1) * (2 * n + 1)) / 6;
+
+        // Calculate actual sum (S) and sum of squares (S2) of array elements
+
+        long S = 0, S2 = 0;
+        for (int i = 0; i < n; i++) {
+            S += arr[i];
+            S2 += (long) arr[i] * (long) arr[i];
+        }
+
+        // Compute the difference values
+        long val1 = S - SN; // X - Y
+
+        // S2 - S2n = X^2 - Y^2
+        long val2 = S2 - S2N;
+
+        // Calculate X + Y
+        val2 = val2 / val1;
+
+        // Calculate X and Y
+        long x = (val1 + val2) / 2; // repeating
+        long y = x - val1; // missing
+
+        return new int[] { (int) x, (int) y };
+
+    }
+
     public static void main(String[] args) {
         int[] nums = { 3, 1, 2, 5, 4, 6, 7, 5 };
 
